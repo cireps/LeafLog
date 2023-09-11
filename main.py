@@ -224,7 +224,7 @@ class View(QMainWindow):
         except:
             print('No icon found')
     
-    #inititalizing commands store in a function for better organization 
+    #init commands stored in a function for better organization 
     def initUi(self):
         self.create_button.clicked.connect(self.create_task)
         self.delete_button.clicked.connect(self.delete_task)
