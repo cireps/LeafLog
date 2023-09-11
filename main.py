@@ -38,6 +38,7 @@ class Task:
         day_of_week = date_time.strftime('%A')
         date_tag = f'{day_of_week}, {formatted_date}'
         return date_tag
+        
 #adds Tasks object properties to the model
 class ToDo():       
     def add_todo(task):
@@ -125,6 +126,7 @@ class View(QMainWindow):
             print("View loaded")
         except:
             print("Load Failed")
+            
     #detects left mouse click and position, mousePressEvent and MoveWindow are responsible for the GUI's title bar to be relocated and moved       
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -236,6 +238,7 @@ class View(QMainWindow):
         self.frame.mouseMoveEvent = self.MoveWindow
         self.styles()
         self.load_view_from_save()
+        
 #runs the main method, loads save, creates app, shows view, and on exit stores the model data into the save_data.log   
 if __name__ == '__main__':
     ToDo.load_data()
