@@ -75,7 +75,7 @@ class View(QMainWindow):
         uic.loadUi('./gui/tasks.ui', self) 
         self.initUi()
 
-    #creates a new to-do by creating a task item using the text store in name and description boxes in the gui
+    #creates a new to-do by creating a task item using the text stored in the name and description boxes of the gui
     def create_task(self):
         self.lineEdit_2.clear()
         name = self.lineEdit.text()
