@@ -9,16 +9,18 @@ import sys
 from model import Model
 import csv
 
+#Task object
 class Task:
     def __init__(self, name, details, time):
         self.name = name
         self.details = details
         self.time = time
-
+    
     def new_task(name, details) -> object:
         task = Task(name=name, details=details, time=Task.timestamp())
         return task
 
+    #returns timestamp including the time of day
     def timestamp():
         unix_current_time = int(time.time())
         date_time = datetime.fromtimestamp(unix_current_time)
@@ -28,6 +30,7 @@ class Task:
         date_tag = f'{day_of_week}, {formatted_date}, {time_of_day}'
         return date_tag
     
+    #returns the day of the week and date
     def date():
         unix_current_time = int(time.time())
         date_time = datetime.fromtimestamp(unix_current_time)
@@ -35,13 +38,15 @@ class Task:
         day_of_week = date_time.strftime('%A')
         date_tag = f'{day_of_week}, {formatted_date}'
         return date_tag
-    
+        
+#adds Tasks object properties to the model
 class ToDo():       
     def add_todo(task):
         Model.tasks['Name'].append(task.name)
         Model.tasks['Details'].append(task.details)
         Model.tasks['Time'].append(task.time)
-    
+
+    #saves the contents of the model to the save_data.log file
     def save_data():
         try:
             df = pd.DataFrame(Model.tasks)
@@ -49,7 +54,8 @@ class ToDo():
             print("File Saved")
         except:
             print("Save Failed")
-    
+
+    #loads the data from the save_data.log file into the model
     def load_data():
         try:
             with open(Model.save_file_path, 'r') as csvfile:
@@ -69,6 +75,7 @@ class View(QMainWindow):
         uic.loadUi('./gui/tasks.ui', self) 
         self.initUi()
 
+    #creates a new to-do by creating a task item using the text stored in the name and description boxes of the gui
     def create_task(self):
         self.lineEdit_2.clear()
         name = self.lineEdit.text()
@@ -76,8 +83,9 @@ class View(QMainWindow):
         ToDo.add_todo(task=Task.new_task(name=name, details=details))
         self.listWidget.addItem(Model.tasks['Name'][-1])
         self.clear_all()
+        ToDo.save_data()
         
-    
+    #gets data from the model with the index value of the item selected in the gui
     def on_index_changed(self):
         try:
             index = self.listWidget.currentRow()
@@ -91,11 +99,13 @@ class View(QMainWindow):
         except:
             print("error")
 
+    #clear the field task name and description fields in the gui
     def clear_all(self):
         self.lineEdit_2.clear()
         self.plainTextEdit.clear()
         self.lineEdit.clear()
-    
+
+    #deletes a task item from the gui and the model using the index value of the selected item
     def delete_task(self):
         index = self.listWidget.currentRow()
         try:
@@ -106,9 +116,11 @@ class View(QMainWindow):
             del Model.tasks['Name'][index]
             del Model.tasks['Details'][index]
             del Model.tasks['Time'][index]
+            ToDo.save_data()
         except:
               print("error")
-                
+
+    #loads the name data into the view from the model, this is done when the application first starts
     def load_view_from_save(self):
         try:
             for item in Model.tasks['Name']:
@@ -117,6 +129,7 @@ class View(QMainWindow):
         except:
             print("Load Failed")
             
+    #detects left mouse click and position, mousePressEvent and MoveWindow are responsible for the GUI's title bar to be relocated and moved       
     def mousePressEvent(self, event):
         if event.button() == Qt.MouseButton.LeftButton:
             self.offset = event.position()
@@ -125,7 +138,8 @@ class View(QMainWindow):
         if self.offset is not None and event.buttons() == Qt.MouseButton.LeftButton:
             new_pos = event.globalPosition() - self.offset
             self.move(new_pos.toPoint())
-    
+
+    #the css styles associated with the gui
     def styles(self):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setFixedSize(660, 375)
@@ -211,7 +225,8 @@ class View(QMainWindow):
             self.setWindowIcon(QIcon('./gui/icons/icon.png'))
         except:
             print('No icon found')
-        
+    
+    #inititalizing commands store in a function for better organization 
     def initUi(self):
         self.create_button.clicked.connect(self.create_task)
         self.delete_button.clicked.connect(self.delete_task)
@@ -225,7 +240,8 @@ class View(QMainWindow):
         self.frame.mouseMoveEvent = self.MoveWindow
         self.styles()
         self.load_view_from_save()
-   
+        
+#runs the main method, loads save, creates app, shows view, and on exit stores the model data into the save_data.log   
 if __name__ == '__main__':
     ToDo.load_data()
     app = QApplication(sys.argv)
@@ -233,4 +249,3 @@ if __name__ == '__main__':
     view.show()
     app.exec()
     ToDo.save_data()
-
