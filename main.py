@@ -225,8 +225,7 @@ class View(QMainWindow):
             self.setWindowIcon(QIcon('./gui/icons/icon.png'))
         except:
             print('No icon found')
-    
-    #inititalizing commands store in a function for better organization 
+        
     def initUi(self):
         self.create_button.clicked.connect(self.create_task)
         self.delete_button.clicked.connect(self.delete_task)
