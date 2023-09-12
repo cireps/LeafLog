@@ -6,9 +6,24 @@ from PyQt6.QtCore import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 import sys
-from model import Model
 import csv
 
+#Model class
+class Model:
+    button_styling = """
+                border-radius: 5px;
+                color: white;
+                background-color: #3F6E27;
+                font-family: Terminal;
+                font-size: 8px;
+                """
+    save_file_path = './save_data/save_data.log'
+    tasks = {
+        'Name':[],
+        'Details':[],
+        'Time':[]
+    }
+    
 #Task object
 class Task:
     def __init__(self, name, details, time):
