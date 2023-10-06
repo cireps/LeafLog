@@ -16,7 +16,6 @@ A simple and elegant task manager application built using Python and PyQt6.
 - pandas
 - csv
 - time
-- datetime
 
 ### Usage:
 
