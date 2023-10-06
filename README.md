@@ -34,7 +34,7 @@ A simple and elegant task manager application built using Python and PyQt6.
 
 Clone the repository and navigate to the project directory:
 ```bash
-git clone https://github.com/cireps/LeafLog
+git clone https://github.com/cireps/LeafLog.git
 
 ```
 Run the script:
